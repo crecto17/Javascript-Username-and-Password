@@ -1,37 +1,39 @@
-// script.js
-document.getElementById('loginForm').addEventListener('submit', function (e) {
-    e.preventDefault();
+// Wait for the DOM to load
+document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById("loginForm");
+    const message = document.getElementById("message");
 
-    // Predefined valid username
-    const validUsername = "admin";
+    // Add an event listener for form submission
+    form.addEventListener("submit", (event) => {
+        event.preventDefault(); // Prevent the form from submitting
 
-    const username = document.getElementById('username').value.trim();
-    const password = document.getElementById('password').value.trim();
-    const errorMessage = document.getElementById('error-message');
+        // Get input values
+        const username = document.getElementById("username").value.trim();
+        const password = document.getElementById("password").value.trim();
 
-    // Clear previous error messages
-    errorMessage.textContent = "";
+        // Validation flags
+        let isValid = true;
 
-    // Regular expression for password validation:
-    // - At least 8 characters
-    // - Includes one uppercase letter
-    // - Includes one number
-    // - Includes one special character
-    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        // Validate username
+        if (username.length < 5) {
+            message.innerHTML = "Username must be at least 5 characters long.";
+            message.className = "error";
+            isValid = false;
+        }
 
-    // Validate username
-    if (username !== validUsername) {
-        errorMessage.textContent = "Invalid username. Please try again.";
-        return;
-    }
+        // Validate password
+        const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        if (!passwordRegex.test(password)) {
+            message.innerHTML = 
+                "Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.";
+            message.className = "error";
+            isValid = false;
+        }
 
-    // Validate password
-    if (!passwordRegex.test(password)) {
-        errorMessage.textContent = 
-            "Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.";
-        return;
-    }
-
-    // If both username and password are valid
-    alert("Login successful!");
+        // If valid, display success message
+        if (isValid) {
+            message.innerHTML = "Login successful!";
+            message.className = "success";
+        }
+    });
 });
