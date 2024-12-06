@@ -2,9 +2,8 @@
 document.getElementById('loginForm').addEventListener('submit', function (e) {
     e.preventDefault();
 
-    // Sample valid username and password
+    // Predefined valid username
     const validUsername = "admin";
-    const validPassword = "12345";
 
     const username = document.getElementById('username').value.trim();
     const password = document.getElementById('password').value.trim();
@@ -13,11 +12,26 @@ document.getElementById('loginForm').addEventListener('submit', function (e) {
     // Clear previous error messages
     errorMessage.textContent = "";
 
-    // Validate credentials
-    if (username === validUsername && password === validPassword) {
-        alert("Login successful!");
-    } else {
-        errorMessage.textContent = "Invalid username or password. Please try again.";
-    }
-});
+    // Regular expression for password validation:
+    // - At least 8 characters
+    // - Includes one uppercase letter
+    // - Includes one number
+    // - Includes one special character
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
 
+    // Validate username
+    if (username !== validUsername) {
+        errorMessage.textContent = "Invalid username. Please try again.";
+        return;
+    }
+
+    // Validate password
+    if (!passwordRegex.test(password)) {
+        errorMessage.textContent = 
+            "Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.";
+        return;
+    }
+
+    // If both username and password are valid
+    alert("Login successful!");
+});
